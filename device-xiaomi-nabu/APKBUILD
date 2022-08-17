@@ -1,0 +1,69 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-xiaomi-nabu
+pkgdesc="Xiaomi Mi Pad 5"
+pkgver=0.1
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	linux-postmarketos-qcom-sm8150-nabu
+	make-dynpart-mappings
+	mesa-dri-gallium
+	mkbootimg
+	postmarketos-base
+"
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+	30-gpu-firmware.files
+"
+
+subpackages="
+	$pkgname-nonfree-firmware:nonfree_firmware
+	$pkgname-mainline-firmware:mainline_firmware
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+mainline_firmware() {
+	pkgdesc="Firmware support packages for mainline kernel"
+	depends="firmware-xiaomi-nabu-adreno"
+	install_if="linux-postmarketos-qcom-sm8150-nabu $pkgname-nonfree-firmware"
+	mkdir "$subpkgdir"
+
+	install -Dm644 "$srcdir/30-gpu-firmware.files" \
+		"$subpkgdir/etc/postmarketos-mkinitfs/files/30-gpu-firmware.files"
+}
+
+nonfree_firmware() {
+	pkgdesc="Firmware for GPU, Touschreen, Audio, Bluetooth, WiFi, etc."
+	depends="
+		firmware-xiaomi-nabu-adreno
+		firmware-xiaomi-nabu-adsp
+		firmware-xiaomi-nabu-cdsp
+		firmware-xiaomi-nabu-ipa
+		firmware-xiaomi-nabu-modem
+		firmware-xiaomi-nabu-wlan
+		firmware-xiaomi-nabu-bluetooth
+		firmware-xiaomi-nabu-venus
+		firmware-xiaomi-nabu-touchscreen
+		msm-modem
+		pd-mapper
+		tqftpserv
+		"
+	install="$subpkgname.post-install"
+	mkdir "$subpkgdir"
+}
+
+sha512sums="
+ede1bb5e5ef306db7fbaf442f8dafe8898b450efdc48994797092b6cda9e374a5483762f42855596dc505575df570611a9734807e6bca229f9bc2ca3ac41b460  deviceinfo
+4e01adab97650882741d48f1910a46cb8bec9ddd07ee69be05af950270b2526d0879df9c2a5ad4acd41a71e8c187ded4ce5df52955f4256b55e255f4918fa52d  30-gpu-firmware.files
+"

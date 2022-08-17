@@ -1,0 +1,59 @@
+_flavor="postmarketos-qcom-sm8150-nabu"
+pkgname=linux-$_flavor
+pkgver=5.19.0
+pkgrel=0
+pkgdesc="Mainline Kernel fork for SM8150 devices"
+arch="aarch64"
+_carch="arm64"
+url="https://github.com/map220v/sm8150-mainline"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-nftables
+	"
+makedepends="bison findutils flex installkernel openssl-dev perl"
+
+_repo="sm8150-mainline"
+_config="config-$_flavor.$arch"
+_commit="6203903a7c125df3a90953282c6c2a61b52a8a09"
+
+# Source
+source="
+	$_repo-$_commit.tar.gz::https://github.com/map220v/$_repo/archive/$_commit/$_repo-$_commit.tar.gz
+	$_config
+"
+builddir="$srcdir/$_repo-$_commit"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-$_flavor"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+
+	install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
+		"$pkgdir/boot/vmlinuz"
+
+	make modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot/ \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir"/usr/share/dtb
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+626f17fd4f1fbd5851e875e3e1548af49a29aa1ec7882ae07c9ac0d83479ef7c2df02b95cbe2753275fb78fb6c1dd643b9792c488d3efefcc2378473161ec3b9  sm7125-mainline-97744a6d9de46fe47f780de7213573201df15c69.tar.gz
+221eb6409b1747f2503d0374d4656eab546932ad2b702183b3d6503ef20e93e07ebdf65b198250917fa7a61afe68059938543396ca066f3c25872de69f65339c  config-postmarketos-qcom-sm7125.aarch64
+"
