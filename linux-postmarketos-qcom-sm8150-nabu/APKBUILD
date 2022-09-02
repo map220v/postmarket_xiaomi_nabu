@@ -1,7 +1,7 @@
 _flavor="postmarketos-qcom-sm8150-nabu"
 pkgname=linux-$_flavor
 pkgver=5.19.0
-pkgrel=0
+pkgrel=1
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
@@ -15,7 +15,7 @@ makedepends="bison findutils flex installkernel openssl-dev perl"
 
 _repo="sm8150-mainline"
 _config="config-$_flavor.$arch"
-_commit="6203903a7c125df3a90953282c6c2a61b52a8a09"
+_commit="dc202bcec016a3abcc39a685bcab234d2b14c6a8"
 
 # Source
 source="
@@ -54,6 +54,6 @@ package() {
 }
 
 sha512sums="
-626f17fd4f1fbd5851e875e3e1548af49a29aa1ec7882ae07c9ac0d83479ef7c2df02b95cbe2753275fb78fb6c1dd643b9792c488d3efefcc2378473161ec3b9  sm7125-mainline-97744a6d9de46fe47f780de7213573201df15c69.tar.gz
-221eb6409b1747f2503d0374d4656eab546932ad2b702183b3d6503ef20e93e07ebdf65b198250917fa7a61afe68059938543396ca066f3c25872de69f65339c  config-postmarketos-qcom-sm7125.aarch64
+5ebad104eb439fbebe3a650b0301fa2891f49132b2dd7056cd96ba5a8d96b4e9c12cf47ec84f7771eda15defb89dea75e8fb859c8ed63ed45a9f5b8372cae7a7  sm8150-mainline-dc202bcec016a3abcc39a685bcab234d2b14c6a8.tar.gz
+2b2cb3fcaf8262dcb4498dfe8070832cf7c69711d10b196eb4493d7a6adcdb3ff8c6181d0233b8a99a3adbd4986b1a4caa259af45d5bd9b9e945495f023d8af1  config-postmarketos-qcom-sm8150-nabu.aarch64
 "
