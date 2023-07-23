@@ -3,13 +3,12 @@
 # scripts.
 
 deviceinfo_format_version="0"
-deviceinfo_name="Xiaomi Mi Pad 5"
+deviceinfo_name="Xiaomi Pad 5"
 deviceinfo_manufacturer="Xiaomi"
 deviceinfo_codename="xiaomi-nabu"
 deviceinfo_year="2021"
 deviceinfo_dtb="qcom/sm8150-xiaomi-nabu"
 deviceinfo_append_dtb="true"
-deviceinfo_modules_initfs="msm panel-novatek-nt36523"
 deviceinfo_arch="aarch64"
 
 # Device related
@@ -22,7 +21,7 @@ deviceinfo_gpu_accelerated="true"
 
 # Bootloader related
 deviceinfo_flash_method="fastboot"
-deviceinfo_kernel_cmdline="PMOS_NO_OUTPUT_REDIRECT clk_ignore_unused"
+deviceinfo_kernel_cmdline="PMOS_NO_OUTPUT_REDIRECT"
 deviceinfo_generate_bootimg="true"
 deviceinfo_bootimg_qcdt="false"
 deviceinfo_bootimg_mtk_mkimage="false"

@@ -1,7 +1,7 @@
 _flavor="postmarketos-qcom-sm8150-nabu"
 pkgname=linux-$_flavor
-pkgver=5.19.0
-pkgrel=1
+pkgver=6.4.0
+pkgrel=0
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
@@ -11,11 +11,11 @@ options="!strip !check !tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-nftables
 	"
-makedepends="bison findutils flex installkernel openssl-dev perl"
+makedepends="bash bison findutils flex installkernel openssl-dev perl"
 
 _repo="sm8150-mainline"
 _config="config-$_flavor.$arch"
-_commit="dc202bcec016a3abcc39a685bcab234d2b14c6a8"
+_commit="c8260a2e0cda04cd1ce45400ac56428c0d51323b"
 
 # Source
 source="
@@ -38,10 +38,7 @@ build() {
 package() {
 	mkdir -p "$pkgdir"/boot
 
-	install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
-		"$pkgdir/boot/vmlinuz"
-
-	make modules_install dtbs_install \
+	make zinstall modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
 		INSTALL_MOD_PATH="$pkgdir" \
@@ -54,6 +51,6 @@ package() {
 }
 
 sha512sums="
-5ebad104eb439fbebe3a650b0301fa2891f49132b2dd7056cd96ba5a8d96b4e9c12cf47ec84f7771eda15defb89dea75e8fb859c8ed63ed45a9f5b8372cae7a7  sm8150-mainline-dc202bcec016a3abcc39a685bcab234d2b14c6a8.tar.gz
-2b2cb3fcaf8262dcb4498dfe8070832cf7c69711d10b196eb4493d7a6adcdb3ff8c6181d0233b8a99a3adbd4986b1a4caa259af45d5bd9b9e945495f023d8af1  config-postmarketos-qcom-sm8150-nabu.aarch64
+a85463c520957efb34a08fc6a9a1d5b4a7ff4d178e50009ae6a9134ce038fc708802d5897c7fe848d5b730aca166b08c4fb88bb79d72904aad05b2b47deea3cc  sm8150-mainline-c8260a2e0cda04cd1ce45400ac56428c0d51323b.tar.gz
+caa051ea90dfdef654853ebd350d252b4414143e72a1dbb5326f7a51e0ba6246b0b9845755c647134a94467ef29ce3fa2f029ecf790a957d2ba927e2d55f5535  config-postmarketos-qcom-sm8150-nabu.aarch64
 "

@@ -1,23 +1,22 @@
 pkgname=firmware-xiaomi-nabu
 pkgver=20220422
-pkgrel=0
-pkgdesc="Firmware for Xiaomi Mi Pad 5"
+pkgrel=1
+pkgdesc="Firmware for Xiaomi Pad 5"
 subpackages="
 	$pkgname-adreno
 	$pkgname-adsp
 	$pkgname-cdsp
-	$pkgname-ipa
+	$pkgname-cirrus
 	$pkgname-modem
 	$pkgname-venus
 	$pkgname-wlan
-	$pkgname-bluetooth
 	$pkgname-touchscreen
 	"
 url="https://github.com/map220v/nabu-firmware"
 arch="aarch64"
 license="proprietary"
 options="!check !strip !archcheck !tracedeps pmb:cross-native"
-_commit="5f2e3ec0d578a79b9be45241325d5753f174a103"
+_commit="0666c43e90661bf6b1fe733ca4886a43c2b11059"
 source="https://github.com/map220v/nabu-firmware/archive/$_commit/nabu-firmware-$_commit.tar.gz"
 builddir="$srcdir/nabu-firmware-$_commit"
 
@@ -27,78 +26,71 @@ package() {
 }
 
 adreno() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 adreno firmware"
+	pkgdesc="Xiaomi Pad 5 adreno firmware"
 
-	install -Dm644 "$builddir"/a6* -t \
+	install -Dm644 "$builddir"/a630_sqe.fw -t \
 		"$subpkgdir/lib/firmware/qcom/"
+    install -Dm644 "$builddir"/a640_gmu.bin -t \
+		"$subpkgdir/lib/firmware/qcom/"
+
+    install -Dm644 "$builddir"/a640_zap.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
 }
 
 adsp() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 adsp firmware"
+	pkgdesc="Xiaomi Pad 5 adsp firmware"
 
-	install -Dm644 "$builddir"/adsp* -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
+	install -Dm644 "$builddir"/adsp.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
 }
 
 cdsp() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 cdsp firmware"
+	pkgdesc="Xiaomi Pad 5 cdsp firmware"
 
-	install -Dm644 "$builddir"/cdsp* -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
+	install -Dm644 "$builddir"/cdsp.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
 }
 
-ipa() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 ipa firmware"
+cirrus() {
+	pkgdesc="Xiaomi Pad 5 cirrus firmware"
 
-	install -Dm644 "$builddir"/ipa_fws.* -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
+	install -Dm644 "$builddir"/cs35l41* -t \
+		"$subpkgdir/lib/firmware/cirrus/"
 }
 
 modem() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 modem firmware"
+	pkgdesc="Xiaomi Pad 5 modem firmware"
 
 	# cp because of the modem_pr directory
-	mkdir -p "$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
+	mkdir -p "$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
 	cp -r "$builddir"/modem* \
-		"$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
-	find "$subpkgdir/lib/firmware/qcom/sm8150/nabu/" \
+		"$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
+	find "$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/" \
 		-type f -exec chmod 0644 {} \;
 }
 
 venus() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 venus firmware"
+	pkgdesc="Xiaomi Pad 5 venus firmware"
 
-	install -Dm644 "$builddir"/venus.* -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
+	install -Dm644 "$builddir"/venus.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
 }
 
 wlan() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 wlan firmware"
+	pkgdesc="Xiaomi Pad 5 wlan firmware"
+	depends="linux-firmware-ath10k"
 
-	install -Dm644 "$builddir"/firmware-5.bin -t \
-		"$subpkgdir/lib/firmware/ath10k/WCN3990/hw1.0/"
-	install -Dm644 "$builddir"/board-2.bin -t \
-		"$subpkgdir/lib/firmware/ath10k/WCN3990/hw1.0/"
 	install -Dm644 "$builddir"/wlanmdsp.mbn -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/nabu/"
-}
-
-bluetooth() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 bluetooth firmware"
-
-	install -Dm644 "$builddir"/crbtfw32.tlv -t \
-		"$subpkgdir/lib/firmware/qca/"
-	install -Dm644 "$builddir"/crnv32.bin -t \
-		"$subpkgdir/lib/firmware/qca/sm8150/nabu/"
+		"$subpkgdir/lib/firmware/qcom/sm8150/xiaomi/nabu/"
 }
 
 touchscreen() {
-	pkgdesc="Samsung Xiaomi Mi Pad 5 touchscreen firmware"
+	pkgdesc="Xiaomi Pad 5 touchscreen firmware"
 
 	install -Dm644 "$builddir"/novatek_nt36523_fw.bin -t \
-		"$subpkgdir/lib/firmware/"
+		"$subpkgdir/lib/firmware/novatek/"
 }
 
 sha512sums="
-3089faf839bad35520f9d79a672466400ac8a63c043e3e47ff10471630f791e01188fe76437803e94a29dde9077981a294ba3d4e066c493c3aaae97629c5853c  nabu-firmware-5f2e3ec0d578a79b9be45241325d5753f174a103.tar.gz
+e7e90389be668b648cff7626c7d9d1af1444d59f9930220ef898b1f6e5497bc918c69c826d50b99e387d965368ee6bf90391c49fe665ce33d153a3e8091dfff8  nabu-firmware-0666c43e90661bf6b1fe733ca4886a43c2b11059.tar.gz
 "

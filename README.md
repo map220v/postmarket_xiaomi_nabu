@@ -1,5 +1,5 @@
 # postmarket_xiaomi_nabu
-PostmarketOS for Xiaomi Mi Pad 5
+PostmarketOS for Xiaomi Pad 5
 
 ## Works
 - USB Gadget mode
@@ -13,4 +13,5 @@ PostmarketOS for Xiaomi Mi Pad 5
 - Touchscreen (nt36523 ts-spi)
 - Thermal sensors
 ## Broken
+- 6.2 - 6.5-rc2 unstable, ufs and dsi clocks can be stuck in disabled state.
 - Accelerometer & Gyroscope (lsm6dso)

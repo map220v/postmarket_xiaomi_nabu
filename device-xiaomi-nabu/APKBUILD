@@ -1,7 +1,7 @@
 # Reference: <https://postmarketos.org/devicepkg>
 pkgname=device-xiaomi-nabu
-pkgdesc="Xiaomi Mi Pad 5"
-pkgver=0.1
+pkgdesc="Xiaomi Pad 5"
+pkgver=0.2
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -10,9 +10,11 @@ options="!check !archcheck"
 depends="
 	linux-postmarketos-qcom-sm8150-nabu
 	make-dynpart-mappings
+    mesa-vulkan-freedreno
 	mesa-dri-gallium
 	mkbootimg
 	postmarketos-base
+    swclock-offset
 "
 makedepends="devicepkg-dev"
 source="
@@ -40,7 +42,7 @@ mainline_firmware() {
 	mkdir "$subpkgdir"
 
 	install -Dm644 "$srcdir/30-gpu-firmware.files" \
-		"$subpkgdir/etc/postmarketos-mkinitfs/files/30-gpu-firmware.files"
+		"$subpkgdir/usr/share/mkinitfs/files/30-gpu-firmware.files"
 }
 
 nonfree_firmware() {
@@ -49,13 +51,13 @@ nonfree_firmware() {
 		firmware-xiaomi-nabu-adreno
 		firmware-xiaomi-nabu-adsp
 		firmware-xiaomi-nabu-cdsp
-		firmware-xiaomi-nabu-ipa
+        firmware-xiaomi-nabu-cirrus
 		firmware-xiaomi-nabu-modem
 		firmware-xiaomi-nabu-wlan
-		firmware-xiaomi-nabu-bluetooth
 		firmware-xiaomi-nabu-venus
 		firmware-xiaomi-nabu-touchscreen
-		msm-modem
+        linux-firmware-qca
+        msm-modem
 		pd-mapper
 		tqftpserv
 		"
@@ -64,6 +66,6 @@ nonfree_firmware() {
 }
 
 sha512sums="
-ede1bb5e5ef306db7fbaf442f8dafe8898b450efdc48994797092b6cda9e374a5483762f42855596dc505575df570611a9734807e6bca229f9bc2ca3ac41b460  deviceinfo
-77f41b63390347ec718e93a501dda5b49d71c072d5cadc528f868ffe4c23eb1254bc4e91db953f109c0b037fe539ce39b3532b291282d6c471174b9a8d217434  30-gpu-firmware.files
+e4cb6449127d43eb8b6dee533fb4000f04bd7653e79902bbaab4fe9dc3d4a978c8bca6895d0debf61392dedb07334ff3d5d7e1c852e3a9cea6701467c703586b  deviceinfo
+ed5788faaa0b70b0fd1d7702ce9e1991749aae4226ae1aac12c73c705541880c8fd7715b3da1abbdb8b0e469081744e92822e0ec3f56ad0160405a6fdfac5806  30-gpu-firmware.files
 "
