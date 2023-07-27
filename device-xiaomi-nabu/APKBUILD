@@ -1,7 +1,7 @@
 # Reference: <https://postmarketos.org/devicepkg>
 pkgname=device-xiaomi-nabu
 pkgdesc="Xiaomi Pad 5"
-pkgver=0.2
+pkgver=0.3
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -20,11 +20,17 @@ makedepends="devicepkg-dev"
 source="
 	deviceinfo
 	30-gpu-firmware.files
+    XiaomiPad5.conf
+    HiFi.conf
+    pulse-xiaomi_nabu.conf
+    nabu.pa
 "
 
 subpackages="
 	$pkgname-nonfree-firmware:nonfree_firmware
 	$pkgname-mainline-firmware:mainline_firmware
+    $pkgname-alsa:alsa
+    $pkgname-pulseaudio:pulseaudio
 "
 
 build() {
@@ -65,7 +71,31 @@ nonfree_firmware() {
 	mkdir "$subpkgdir"
 }
 
+alsa() {
+	pkgdesc="Audio configuration files"
+	depends="alsa-ucm-conf"
+	install_if="linux-postmarketos-qcom-sm8150-nabu $pkgname-nonfree-firmware"
+	mkdir "$subpkgdir"
+	
+	install -Dm644 "$srcdir/XiaomiPad5.conf" "$subpkgdir/usr/share/alsa/ucm2/conf.d/sm8150/Xiaomi Pad 5.conf"
+	install -Dm644 "$srcdir/HiFi.conf" "$subpkgdir/usr/share/alsa/ucm2/Xiaomi/nabu/HiFi.conf"
+}
+
+pulseaudio() {
+	pkgdesc="Pulseaudio configuration files"
+	depends="pulseaudio"
+	install_if="linux-postmarketos-qcom-sm8150-nabu $pkgname-nonfree-firmware"
+	mkdir "$subpkgdir"
+	
+	install -Dm644 "$srcdir/pulse-xiaomi_nabu.conf" "$subpkgdir/etc/pulse/daemon.conf.d/89-xiaomi_nabu.conf"
+	install -Dm644 "$srcdir/nabu.pa" "$subpkgdir/etc/pulse/default.pa.d/nabu.pa"
+}
+
 sha512sums="
 e4cb6449127d43eb8b6dee533fb4000f04bd7653e79902bbaab4fe9dc3d4a978c8bca6895d0debf61392dedb07334ff3d5d7e1c852e3a9cea6701467c703586b  deviceinfo
 ed5788faaa0b70b0fd1d7702ce9e1991749aae4226ae1aac12c73c705541880c8fd7715b3da1abbdb8b0e469081744e92822e0ec3f56ad0160405a6fdfac5806  30-gpu-firmware.files
+b4368573edb90cfdd7d0256cdc0eb482c73538f27400b429b7e6f745fa8845951af51814027d6c8cf159fbf22f615a591de0a0e862dccd3febb96a77f5e44533  XiaomiPad5.conf
+37d36c0f8983b49b4596ffe9233e41e8d40af17f4702ec5565e4e782e87b625575ad6a1e9360b139ec217f5f2d0061cbc950a9cc46ac5aff233f4e459896f07e  HiFi.conf
+02e2600514fc29ab83d056ada3d1fb0b8a598dc47c9848aebdeef3f0f67bb78cd45c5b23d3158fb3a0826f47061161bbc7ee8cd9ac5c408c1de37cdbe5d8e9ba  pulse-xiaomi_nabu.conf
+d66d6f2129f8aef4449137a1506fb3b3a1275c98502238537ac4dd0c174145706bac971e7e100d3599c9b8aa9c62319c302884d39aad5ba99c9bdcbe1e54bc23  nabu.pa
 "

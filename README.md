@@ -2,6 +2,7 @@
 PostmarketOS for Xiaomi Pad 5
 
 ## Works
+- Audio
 - USB Gadget mode
 - Display (novatek,nt36523)
 - GPU (FD640)
