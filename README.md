@@ -3,6 +3,7 @@ PostmarketOS for Xiaomi Pad 5
 
 ## Works
 - Audio
+- Internal microphones
 - USB Gadget mode
 - Display (novatek,nt36523)
 - GPU (FD640)
@@ -13,6 +14,7 @@ PostmarketOS for Xiaomi Pad 5
 - IOMMU
 - Touchscreen (nt36523 ts-spi)
 - Thermal sensors
+- Battery status (pm8150b-fg)
 ## Broken
 - 6.2 - 6.5-rc2 unstable, ufs and dsi clocks can be stuck in disabled state.
 - Accelerometer & Gyroscope (lsm6dso)
